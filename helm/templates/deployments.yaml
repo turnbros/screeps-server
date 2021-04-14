@@ -1,0 +1,41 @@
+---
+
+{{- with .Values.launcher }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "launcher_name" . }}
+  labels:
+    app.kubernetes.io/name: {{ template "launcher_name" . }}
+    app.kubernetes.io/component: launcher
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "launcher_name" . }}
+      app.kubernetes.io/component: launcher
+      app.kubernetes.io/part-of: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ template "launcher_name" . }}
+        app.kubernetes.io/component: launcher
+        app.kubernetes.io/part-of: {{ .Chart.Name }}
+    spec:
+      containers:
+        - name: {{ template "launcher_name" . }}
+          image: {{ printf "%s:%s" .image .launcher.tag}}          
+          ports:
+            - containerPort: 21025
+            - containerPort: 21026
+          env:
+            - name: MONGO_HOST
+              value: '192.168.0.222'
+            - name: MONGO_CONN
+              value: 'mongodb://username:password@hostname.com/database_name?ssl=true'
+            - name: STEAM_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "secret_name" . }}
+                  key: steam_key
+{{- end }}
