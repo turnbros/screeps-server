@@ -1,13 +1,14 @@
-name: nginx
-description: A basic NGINX HTTP server
+name: screeps-mongo
+description: A basic Screeps server with MongoDB database
 version: 0.1.0
 keywords:
     - screeps
     - game
     - server
+    - mongodb
 home: https://github.com/turnbros/screeps-server
 sources:
-    - https://hub.docker.com/_/nginx/
+    - https://hub.docker.com/r/screepers/screeps-launcher
 maintainers:
-    - name: technosophos
-      email: mbutcher@deis.com
+    - name: Dylan Turnbull
+      email: dylanturn@gmail.com

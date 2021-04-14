@@ -1,20 +1,19 @@
-
 {{- define "launcher_name" }}
-{{ .Release.Name }}-launcher
+{{- printf "%s-launcher" "asdf" -}}
 {{- end }}
 
 {{- define "service_name" }}
-{{ .Release.Name }}-svc
+{{- printf "%s-svc" "asdf" -}}
 {{- end }}
 
 {{- define "database_name" }}
-{{ .Release.Name }}-db
+{{- printf "%s-db" "asdf" -}}
 {{- end }}
 
 {{- define "config_name" }}
-{{ .Release.Name }}-config
+{{- printf "%s-config" "asdf" -}}
 {{- end }}
 
 {{- define "secret_name" }}
-{{ .Release.Name }}-secret
+{{- printf "%s-secret" "asdf" -}}
 {{- end }}
