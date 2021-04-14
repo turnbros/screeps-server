@@ -1,0 +1,13 @@
+name: nginx
+description: A basic NGINX HTTP server
+version: 0.1.0
+keywords:
+    - screeps
+    - game
+    - server
+home: https://github.com/turnbros/screeps-server
+sources:
+    - https://hub.docker.com/_/nginx/
+maintainers:
+    - name: technosophos
+      email: mbutcher@deis.com

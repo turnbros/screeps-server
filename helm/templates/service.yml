@@ -1,0 +1,20 @@
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "service_name" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "service_name" . }}
+    app.kubernetes.io/component: service
+    app.kubernetes.io/part-of: screeps-{{ .Release.Name }}
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: {{ template "launcher_name" . }}
+    app.kubernetes.io/part-of: screeps-{{ .Release.Name }}
+  ports:
+    - port: 21025
+      targetPort: 21025
+    - port: 21026
+      targetPort: 21026      

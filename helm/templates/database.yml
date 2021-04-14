@@ -1,0 +1,20 @@
+apiVersion: kubedb.com/v1alpha1
+kind: MongoDB
+metadata:
+  name: {{ template "database_name" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app.kubernetes.io/name: {{ template "database_name" . }}
+    app.kubernetes.io/component: database
+    app.kubernetes.io/part-of: screeps-{{ .Release.Name }}
+spec:
+  version: {{ .Values.database.mongo_version }}
+  storageType: Durable
+  storage:
+    storageClassName: {{ .Values.database.storage_class_name }}
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: {{ .Values.database.allocated_space }}
+  terminationPolicy: DoNotTerminate
