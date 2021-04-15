@@ -1,0 +1,24 @@
+---
+
+{{- with .Values.database }}
+apiVersion: kubedb.com/v1alpha2
+kind: MongoDB
+metadata:
+  name: {{ printf "%s-mongo" $.Values.name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-mongo" $.Values.name | quote }}
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
+spec:
+  version: {{ .mongo_version }}
+  storageType: Durable
+  storage:
+    storageClassName: {{ .storage_class_name | quote }}
+    accessModes:
+      - ReadWriteOnce
+    resources:
+      requests:
+        storage: {{ .allocated_space }}
+  terminationPolicy: DoNotTerminate
+{{- end }}

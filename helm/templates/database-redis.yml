@@ -1,0 +1,23 @@
+---
+
+{{- with .Values.database }}
+apiVersion: kubedb.com/v1alpha2
+kind: Redis
+metadata:
+  name: {{ printf "%s-redis" $.Values.name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-redis" $.Values.name | quote }}
+    app.kubernetes.io/component: "database"
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
+spec:
+  version: 6.0.6
+  storageType: Durable
+  storage:
+    storageClassName: {{ .storage_class_name | quote }}
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 5Gi
+{{- end }}

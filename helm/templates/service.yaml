@@ -3,20 +3,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "service_name" . | quote }}
-  namespace: {{ .Values.namespace | quote }}
+  name: {{ printf "%s-service" $.Values.name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ template "service_name" . | quote }}
+    app.kubernetes.io/name: {{ printf "%s-service" $.Values.name | quote }}
     app.kubernetes.io/component: "service"
-    app.kubernetes.io/part-of: {{ .Chart.Name | quote }}
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
 spec:
   type: ClusterIP
   selector:
-    app.kubernetes.io/name: {{ template "launcher_name" . }}
-    app.kubernetes.io/part-of: {{ .Chart.Name | quote }}
+    app.kubernetes.io/name: {{ printf "%s-launcher" $.Values.name | quote }}
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
   ports:
-    - port: 21025
+    - name: screep1
+      port: 21025
       targetPort: 21025
-    - port: 21026
-      targetPort: 21026
-      

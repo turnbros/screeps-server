@@ -4,38 +4,42 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ template "launcher_name" . }}
+  name: {{ printf "%s-launcher" $.Values.name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
   labels:
-    app.kubernetes.io/name: {{ template "launcher_name" . }}
-    app.kubernetes.io/component: launcher
-    app.kubernetes.io/part-of: {{ .Chart.Name }}
+    app.kubernetes.io/name: {{ printf "%s-launcher" $.Values.name | quote }}
+    app.kubernetes.io/component: "launcher"
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ template "launcher_name" . }}
-      app.kubernetes.io/component: launcher
-      app.kubernetes.io/part-of: {{ .Chart.Name }}
+      app.kubernetes.io/name: {{ printf "%s-launcher" $.Values.name | quote }}
+      app.kubernetes.io/component: "launcher"
+      app.kubernetes.io/part-of: {{ $.Values.name | quote }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ template "launcher_name" . }}
-        app.kubernetes.io/component: launcher
-        app.kubernetes.io/part-of: {{ .Chart.Name }}
+        app.kubernetes.io/name: {{ printf "%s-launcher" $.Values.name | quote }}
+        app.kubernetes.io/component: "launcher"
+        app.kubernetes.io/part-of: {{ $.Values.name | quote }}
     spec:
+      volumes:
+        - name: screeps-config
+          configMap:
+            name: {{ printf "%s-config" $.Values.name | quote }}
       containers:
-        - name: {{ template "launcher_name" . }}
-          image: {{ printf "%s:%s" .image .launcher.tag}}          
+        - name: {{ printf "%s-launcher" $.Values.name | quote }}
+          image: {{ printf "%s:%s" .image .tag | quote }}          
           ports:
             - containerPort: 21025
-            - containerPort: 21026
           env:
-            - name: MONGO_HOST
-              value: '192.168.0.222'
-            - name: MONGO_CONN
-              value: 'mongodb://username:password@hostname.com/database_name?ssl=true'
             - name: STEAM_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ template "secret_name" . }}
-                  key: steam_key
+                  name: {{ printf "%s-secret" $.Values.name | quote }}
+                  key: "steam_key"
+          volumeMounts:
+            - name: screeps-config
+              mountPath: /screeps/config.yml
+              subPath: config.yml
 {{- end }}

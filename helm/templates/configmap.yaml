@@ -3,10 +3,16 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "asdf"
-  namespace: {{ .Values.namespace | quote }}
+  name: {{ printf "%s-config" $.Values.name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
   labels:
-    app.kubernetes.io/name: "asdf" #{{ template "config_name" . }}
+    app.kubernetes.io/name: {{ printf "%s-config" $.Values.name | quote }}
     app.kubernetes.io/component: "config"
-    app.kubernetes.io/part-of: {{ .Chart.Name | quote }}
-data: {{ .Values.game_config }}
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
+data:
+  config.yml: |
+    env:
+      shared:
+        MONGO_HOST: {{ printf "%s-mongo.%s.svc" $.Values.name $.Values.namespace  }}
+        REDIS_HOST: {{ printf "%s-redis.%s.svc" $.Values.name $.Values.namespace  }}
+{{ $.Values.game_config | indent 4 -}}
