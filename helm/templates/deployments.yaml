@@ -42,4 +42,4 @@ spec:
             - name: screeps-config
               mountPath: /screeps/config.yml
               subPath: config.yml
-{{- end }}
+  {{- end }}

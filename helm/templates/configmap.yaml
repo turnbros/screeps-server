@@ -14,5 +14,6 @@ data:
     env:
       shared:
         MONGO_HOST: {{ printf "%s-mongo.%s.svc" $.Values.name $.Values.namespace  }}
+        MONGO_CONN: {{ printf "mongodb://screeps:%s@%s-mongo.%s.svc?ssl=false" $.Values.mongo_password $.Values.name $.Values.namespace  }}
         REDIS_HOST: {{ printf "%s-redis.%s.svc" $.Values.name $.Values.namespace  }}
 {{ $.Values.game_config | indent 4 -}}

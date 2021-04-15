@@ -12,6 +12,8 @@ metadata:
     app.kubernetes.io/part-of: {{ $.Values.name | quote }}
 spec:
   version: {{ .mongo_version }}
+  authSecret:
+    name: {{ printf "%s-mongo-auth" $.Values.name | quote }}
   storageType: Durable
   storage:
     storageClassName: {{ .storage_class_name | quote }}
@@ -20,5 +22,25 @@ spec:
     resources:
       requests:
         storage: {{ .allocated_space }}
-  terminationPolicy: DoNotTerminate
+  podTemplate:
+    spec:
+      env:
+        - name: MONGO_INITDB_DATABASE
+          value: screeps
 {{- end }}
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ printf "%s-mongo-auth" $.Values.name | quote }}
+  namespace: {{ $.Values.namespace | quote }}
+  labels:
+    app.kubernetes.io/name: {{ printf "%s-mongo-auth" $.Values.name | quote }}
+    app.kubernetes.io/component: secret
+    app.kubernetes.io/part-of: {{ $.Values.name | quote }}
+type: Opaque
+data:
+  username: {{ printf "screeps" | b64enc }}
+  password: {{ printf "%s" $.Values.mongo_password | b64enc }}

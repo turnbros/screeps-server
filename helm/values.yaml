@@ -1,11 +1,15 @@
 ---
 
 name: "screep-city"
+
 steam_key: "SECRET_STEAM_KEY"
+mongo_password: "silly_password"
+
 game_config: |
   mods: # Recommended mods
     - screepsmod-auth
     - screepsmod-admin-utils
+    - screepsmod-mongo
   bots:
     simplebot: screepsbot-zeswarm
   serverConfig: # This section requires screepsmod-admin-utils to work
